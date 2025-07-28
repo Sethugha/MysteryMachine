@@ -104,7 +104,7 @@ class AIConfig(db.Model):
     ai_model = db.Column(db.String)
     ai_role = db.Column(db.String)
     ai_temperature = db.Column(db.Float)
-    ai_top_p = db.Column(db.Integer)
+    ai_top_p = db.Column(db.Float)
     ai_top_k = db.Column(db.Integer)
     ai_max_out = db.Column(db.Integer)
 
