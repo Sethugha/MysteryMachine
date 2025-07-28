@@ -92,6 +92,7 @@ class Conversation(db.Model):
     free_text = db.Column(db.String)
     ai_config_id = db.Column(db.Integer, db.ForeignKey('aiconfigs.id'))
     conv_metadata = db.Column(db.String)
+    avg_time = db.Column(db.Float)
 
     def __repr__(self):
         return f"Conversation: Case: {self.case_id} Prompt: {self.prompt_id}: {self.conv_metadata}"

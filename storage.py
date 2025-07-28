@@ -404,11 +404,3 @@ def get_prompt_by_title(title):
         return prompt
     except Exception as e:  # For Debugging and Testing catch all Exceptions
         return None
-
-def main():
-    pass
-
-
-
-if __name__ == "__main__":
-                main()
