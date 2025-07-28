@@ -31,8 +31,8 @@ Should be able to create a deduction game from every story but for texting purpo
 #### Installation
 
 ```bash
-git clone https://github.com/Sethugha/Deductor.git
-cd Deductor
+git clone https://github.com/Sethugha/MysteryMachine.git
+cd MysteryMachine
 python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
@@ -41,10 +41,10 @@ pip install -r requirements.txt
 #### Running the Application
 
 ```bash
-python3 backend/backend_app.py
+python3 backend_app.py
 ```
 
-Frontend files are located in `/static` and served directly via Flask.
+Frontend files are located in `/static` and served currently from backend_app.
 
 ---
 ### Setting Difficulty 
