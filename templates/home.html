@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mystery Machine</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
 
 </head>
-<body onload="clearMark()" style="background: url('../static/images/title.jpeg') no-repeat center;">
+<body onload="clearMark()">
   <header>
         <h1>Mystery Machine</h1>
          {% if message %}
