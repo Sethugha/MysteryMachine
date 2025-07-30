@@ -50,7 +50,8 @@ class AIRequest():
             raise
 
     def metamorphosis(self, data_string, case_id):
-        """Order the metamorphosis text --> game."""
+        """Order the metamorphosis text --> game. Uses meta prompting"""
+
         prompt = f"""You are a script author ordered to create a script for a deduction game
         out of the given crime story {data_string}.
         Your complete knowledge about events, evidences and facts arises from the crime story itself.
@@ -61,7 +62,7 @@ class AIRequest():
         'introduction': Short description of the crime case (about 5-7 sentences).
         'characters': Extract the persons contained in {data_string} and deliver a list of dicts,
         each containing the full name using key 'name' and the person´s role in the story using key 'role'.
-        'clues': Max 7 dictionaries each representing a clue with rules as follow:
+        'clues': Up to 7 dictionaries each representing a clue with rules as follow:
         Every item, occurrence or witness linked to the crime is a clue. 
         Store clues as visible below: 
         'clue_name': name.
@@ -82,11 +83,6 @@ class AIRequest():
         statistics = f"statistics/response_candidates{time.strftime("%Y%m%d-%H%M%S")}.log"
         with open(statistics,'w') as sf:
             sf.write(str(response.candidates))
-        tlist = str(response.candidates).split()
-        pos = tlist.index('finish_reason:')
-        if tlist[pos + 1] != 'STOP':
-            print(tlist[pos], tlist[pos+1])
-            return "Sorry, it seems the last request exceeded the token limit."
 
         response_text = response.text.strip()
 
@@ -94,6 +90,7 @@ class AIRequest():
                        + str(response.usage_metadata.cached_content_token_count) + ", " \
                        + str(response.usage_metadata.candidates_token_count) + ", " \
                        + str(response.usage_metadata.total_token_count)
+
 
         conversation = Conversation(case_id=case_id,
                                     prompt_id=1,
@@ -105,13 +102,13 @@ class AIRequest():
         storage.add_object_to_db_session(conversation)
         # Remove Markdown-Code-Block-Format
         response_text = response_text.replace('```json', '').replace('```', '').strip()
-
+        print(response_text)
         # Validiere und verarbeite die Antwort
         try:
             result = json.loads(response_text)
             return result
         except Exception as e:
-            return f"Sorry, it seems something is wrong. Maybe an exceeded token limit?"
+            return "Sorry, something went wrong."
 
 
     def ai_hint_request(self, data_string, clue):
@@ -127,7 +124,8 @@ class AIRequest():
                 Every additional examination of a clue reveals up to 2 new details if these
                 are mentioned within {data_string} but not in {clue}.
                 Create an answer in plain english as if it came from an observer
-                reporting your findings. 
+                reporting your findings. Example: "Examining the chair you found out that
+                someone must have stood on it." 
                 """
         start = time.perf_counter()
         response = self.model.generate_content(prompt)
@@ -170,6 +168,7 @@ class AIRequest():
                 You must not use any knowledge from outside or draw own conclusions.
                 Answer directly without hedging the questions.
                 Your task is to play the role authentical, not to "win" the interrogation.
+                Example: "The bell-rope is a fake? So what! It´s an accessory, nothing else!"
                 """
         start = time.perf_counter()
         response = self.model.generate_content(prompt)
@@ -302,10 +301,10 @@ class AIRequest():
                         associated with {clue} and {search_str} are to reveal with restrictions 
                         as visible below:
                         Any item, trail, witness, location or fact mentioned in the crime story but not in {clue} 
-                        is an indicator.
-                        If there are no indicators give a subtle hint like: 'Nothing special caught your eye',
-                        or: 'The witness shrugs, he has no idea.'  
-                        Reveal 1-3 indicators of all indicators associated with {clue} and give a subtle hint to search 
+                        is an indicator. 
+                        If there are no indicators give a subtle hint. Examples:'Nothing special caught your eye',
+                        'The witness shrugs, he has no idea.'  
+                        Reveal max 2 indicators of all indicators associated with {clue} and give a subtle hint to search 
                         again if there are leftovers.
                         Answer in plain english. To this answer append the string '#RV#' followed by a list of the revealed 
                         indicators.     

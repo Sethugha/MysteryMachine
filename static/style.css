@@ -5,7 +5,7 @@
 --primary-color: #4CAF50;
 --primary-color-dark: darken(var(--primary-color), 25%);
 --primary-color-bright: brighten(var(--primary-color), 25%);
---bg-color: #f9f9f9;
+--bg-color: grey;
 --card-bg: #f0f0f0;
 --card-hover-bg: #e8f5e9;
 --text-color: #333;
@@ -14,10 +14,23 @@
 --border-color: #ddd;
 
 body {
-  margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: var(--bg-color);
+  background-color: grey;
 }
+
+.outer-ridge {
+  position: absolute;
+  inset: 0px;
+
+}
+
+.inner-ridge {
+  position: relative;
+  inset: 0px;
+  margin: 0 10% auto;
+
+}
+
 
 .no-cases {
   color: #888;
@@ -47,10 +60,10 @@ header {
   text-align: center;
   position: relative;
   bottom: 40px;
-  flex: 0 0 800px;
+  flex: 0 0 600px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: space-between;
   justify-content: flex-start;
 }
 
@@ -62,6 +75,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  color: grey;
 
 
   form {
@@ -119,12 +133,13 @@ header {
     justify-content: flex-start;
     gap: 10px;
 
-
     select {
       width: 400px;
       height: 160px;
       padding: 10px;
       gap: 10px;
+      opacity: 0.7;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 
     }
 
@@ -157,20 +172,39 @@ footer.universal {
   text-align: center;
   margin-top: 60px;
   padding: 20px;
-  background-color: #eee;
+  background: transparent;
 
   nav a {
 
     margin: 0 10px;
-    color: #444;
+    color: #947;
     text-decoration: none;
     font-weight: bold;
+    background: transparent;
 
     &:hover {
       text-decoration: underline;
     }
   }
 }
+
+
+input {
+    background-color: #ddd;
+    border: 1px solid #ddd;
+
+    &:hover {
+        box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%) inset;
+    }
+
+    &:active {
+        border: 1px solid #ddd;
+        box-shadow: 3px 3px 3px 2px rgb(0 0 0 / 30%) inset;
+    }
+}
+
+
+
 
  input[type="submit"] {
     max-width: 400px;
@@ -215,12 +249,13 @@ footer.universal {
 }
 
 .flashcard {
-  background-color: #fdfdfd;
-  border: 1px solid var(--border-color);
+  background-color: #f0f0f0;
+  border: 1px solid #c0c0c0;
   border-radius: 8px;
   margin-bottom: 30px;
   font-size: 1em;
   line-height: 1.5;
+  padding: 10px;
 
 
   strong {
